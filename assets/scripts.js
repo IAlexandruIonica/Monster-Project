@@ -9,7 +9,8 @@ const LOG_PLAYER_HEAL = 'PLAYER HEAL';
 const LOG_GAME_OVER = 'GAME OVER';
 const SPECIAL_COOLDOWN = 2;
 let roundCounter = 0;
-//hardcode string values of normal and strong attack later.
+let nextSpecialUse = 0;
+
 
 const enteredHealthValue = parseInt(
   prompt('Choose maximum life for the player and the beast', '100')
@@ -18,7 +19,7 @@ const enteredHealthValue = parseInt(
 let chosenMaxLife = enteredHealthValue;
 let battleLog = [];
 
-//Find how to throw the alert for user inputs containing both numbers and letters.
+
 if (isNaN(chosenMaxLife) || chosenMaxLife <= 0) {
   alert("It's alright, I'm here to help!");
   chosenMaxLife = 100;
@@ -72,18 +73,13 @@ function writeToLog(event, value, monsterHealth, playerHealth) {
     };
   }
   battleLog.push(logEntry);
-  
+
   const logList = document.getElementById('log-list');
 
   const listItem = document.createElement('li');
-  listItem.textContent = `Event: ${logEntry.event}, Value: ${
-    logEntry.value
-  }, Target: ${logEntry.target}, Monster Health: ${
-    logEntry.finalMonsterHealth
-  }, Player Health: ${logEntry.finalPlayerHealth}`;
+  listItem.textContent = `Event: ${logEntry.event}, Value: ${logEntry.value}, Target: ${logEntry.target}, Monster Health: ${logEntry.finalMonsterHealth}, Player Health: ${logEntry.finalPlayerHealth}`;
 
   logList.appendChild(listItem);
-
 }
 
 function reset() {
@@ -101,6 +97,10 @@ function endRound() {
     currentMonsterHealth,
     currentPlayerHealth
   );
+
+  strongAttackBtn.disabled = !(nextSpecialUse <= roundCounter);
+  healBtn.disabled = !(nextSpecialUse <= roundCounter);
+
   if (currentMonsterHealth <= 0 && currentPlayerHealth > 0) {
     alert('You won!');
     writeToLog(
@@ -129,6 +129,7 @@ function endRound() {
   if (currentMonsterHealth <= 0 || currentPlayerHealth <= 0) {
     reset();
   }
+  roundCounter++; // Increment roundCounter after each action
 }
 
 function attackMonster(type) {
@@ -140,19 +141,13 @@ function attackMonster(type) {
   } else if (type === 'STRONG ATTACK') {
     maxDamage = STRONG_ATTACK_VALUE;
     logEvent = LOG_EVENT_PLAYER_STRONG_ATTACK;
-    // (roundCounter - SPECIAL_COOLDOWN <= 2) {
-    //strongAttackBtn.disabled = true;
-    // } else {
-    //   alert('You can only perform a strong attack once every two rounds.');
-    //   //strongAttackBtn.disabled = false;
-    //   return;
-    // }
+    nextSpecialUse = roundCounter + SPECIAL_COOLDOWN;
   }
   const damage = dealMonsterDamage(maxDamage);
   currentMonsterHealth -= damage;
   writeToLog(logEvent, damage, currentMonsterHealth, currentPlayerHealth);
+
   endRound();
-  //roundCounter++; // Increment roundCounter after each action
 }
 
 function attackHandler() {
@@ -166,49 +161,26 @@ function strongAttackHandler() {
 function healPlayerHandler() {
   let healValue;
   if (currentPlayerHealth >= chosenMaxLife - HEAL_VALUE) {
-    //&& roundCounter - SPECIAL_COOLDOWN <= 2)
     healValue = chosenMaxLife - currentPlayerHealth;
-    //healBtn.disabled = false;
   } else {
     healValue = HEAL_VALUE;
   }
   increasePlayerHealth(healValue);
   currentPlayerHealth += healValue;
-  //healBtn.disabled = true;
+
   writeToLog(
     LOG_PLAYER_HEAL,
     healValue,
     currentMonsterHealth,
     currentPlayerHealth
   );
+  nextSpecialUse = roundCounter + SPECIAL_COOLDOWN;
   endRound();
 }
 
-function printLogHandler(){
+function printLogHandler() {
   logContainer.classList.toggle('hidden');
 }
-
-// function printLogHandler() {
- 
-//   if(logContainer.classList.contains('hidden')) {
-//     logContainer.innerHTML = '';
-//     const logList = document.createElement('ol');
-//     battleLog.forEach((logEntry, index) => {
-//       const listItem = document.createElement('li');
-//       listItem.textContent = `${index + 1}. Event: ${logEntry.event}, Value: ${
-//         logEntry.value
-//       }, Target: ${logEntry.value}, Monster Health: ${
-//         logEntry.finalMonsterHealth
-//       }, Player Health ${logEntry.finalPlayerHealth}`;
-//       logList.appendChild(listItem);
-//       logContainer.classList.remove('hidden');
-//     });
-//     logContainer.appendChild(logList); 
-//   }else {
-//     logContainer.classList.add('hidden');
-//   }
-// }
-
 
 attackBtn.addEventListener('click', attackHandler);
 strongAttackBtn.addEventListener('click', strongAttackHandler);
