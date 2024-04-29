@@ -1,0 +1,118 @@
+html {
+    font-family: sans-serif;
+  }
+  
+  body {
+    background: #2c2c2c;
+  }
+  
+  h2 {
+    font-size: 1.25rem;
+    margin: 1rem 0.5rem;
+  }
+  
+  progress {
+    -webkit-appearance:none;
+    -moz-appearance:none;        
+    appearance: none;
+    width: 80%;
+    height: 2rem;
+    border: 1px;
+  }
+  
+  progress[value]::-webkit-progress-bar,
+  progress[value] {
+    background-color: #eee;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;
+  }
+  
+  progress[value]::-webkit-progress-value {
+    background-color: #a927f5;
+    transition: all 0.25s ease-out;
+  }
+  
+  progress[value]::-moz-progress-bar {
+    background-color: #a927f5;
+    transition: all 0.2s ease-out;
+  }
+  
+  button {
+    font: inherit;
+    background: #ff0062;
+    border: 1px solid #ff0062;
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 6px;
+    cursor: pointer;
+    margin: 0.5rem;
+  }
+  
+ 
+
+  button:focus {
+    outline: none;
+  }
+  
+  
+  button:hover{
+    background: #a927f5;
+    border-color: #a927f5;
+    transform: translateY(-3px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+  }
+  button:active {
+    background: #a927f5;
+    border-color: #a927f5;
+    transform: translateY(-1px);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+  }
+
+  button:disabled{
+    background: #868686;
+  }
+  
+  #health-levels,
+  #controls {
+    margin: 2rem auto;
+    width: 30rem;
+    text-align: center;
+    border-radius: 10px;
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+    background: white;
+  }
+  
+  #controls {
+    display: flex;
+    flex-direction: column;
+  }
+
+  #log-container {
+    margin-top: 20px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+  }
+  
+  #log-container ol {
+    padding: 0;
+    margin: 0;
+  }
+  
+  #log-container li {
+    list-style-type: none;
+    margin-bottom: 5px;
+    padding: 8px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+  
+  #log-container li:nth-child(even) {
+    background-color: #f2f2f2;
+  
+  }
+  .hidden{
+    display:none;
+  }
